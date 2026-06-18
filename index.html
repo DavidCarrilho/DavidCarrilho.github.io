@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Carrilho — Mobile Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0b;
+    --bg2: #111114;
+    --bg3: #17171c;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #f0efe8;
+    --text2: #888882;
+    --text3: #555550;
+    --accent: #7c6af7;
+    --accent2: #a693ff;
+    --accent-glow: rgba(124,106,247,0.15);
+    --green: #3fcf8e;
+    --amber: #f5a623;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --r: 12px;
+    --r2: 20px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(10,10,11,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent2); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent) !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.85 !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 3rem 4rem;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    top: 10%;
+    right: -10%;
+    pointer-events: none;
+  }
+
+  .hero-content { max-width: 640px; z-index: 1; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(124,106,247,0.1);
+    border: 1px solid rgba(124,106,247,0.25);
+    border-radius: 50px;
+    padding: 0.35rem 0.875rem;
+    font-size: 0.8rem;
+    color: var(--accent2);
+    margin-bottom: 2rem;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 .accent { color: var(--accent2); }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--text2);
+    line-height: 1.75;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: var(--font-body);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(124,106,247,0.35);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border2);
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+    font-family: var(--font-body);
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .section-sub {
+    color: var(--text2);
+    font-size: 1rem;
+    max-width: 520px;
+    margin-bottom: 3.5rem;
+    font-weight: 300;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text2);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .skill-chip:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    transform: translateY(-3px);
+  }
+
+  .skill-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .exp-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 1.75rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    transition: border-color 0.2s;
+    margin-bottom: 0.75rem;
+  }
+
+  .exp-item:hover { border-color: var(--border2); }
+
+  .exp-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-company {
+    font-size: 0.875rem;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-desc {
+    font-size: 0.875rem;
+    color: var(--text2);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .exp-date {
+    font-size: 0.78rem;
+    color: var(--text3);
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 0.25rem;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-filter {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 0.45rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .project-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.25s, transform 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card:hover {
+    border-color: rgba(124,106,247,0.4);
+    transform: translateY(-4px);
+  }
+
+  .project-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .project-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(124,106,247,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .project-stars {
+    font-size: 0.78rem;
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .project-lang {
+    font-size: 0.75rem;
+    color: var(--text3);
+    background: var(--bg2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+  }
+
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 0.25rem;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.65;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .project-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .topic-tag {
+    font-size: 0.72rem;
+    color: var(--accent2);
+    background: rgba(124,106,247,0.08);
+    border: 1px solid rgba(124,106,247,0.15);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text3);
+  }
+
+  .loading-projects {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem;
+    color: var(--text3);
+    font-size: 0.9rem;
+  }
+
+  .loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+  }
+
+  @keyframes dots {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+  }
+
+  .error-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--text3);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-info p {
+    color: var(--text2);
+    font-size: 1rem;
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.875rem 1rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    transition: all 0.2s;
+  }
+
+  .social-link:hover {
+    color: var(--text);
+    border-color: var(--border2);
+    transform: translateX(4px);
+  }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--accent-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .contact-form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  input, textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 0.875rem 1rem;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    resize: vertical;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--text3);
+  }
+
+  textarea { min-height: 120px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text3);
+    font-size: 0.82rem;
+  }
+
+  /* ── AVATAR PLACEHOLDER ── */
+  .avatar-ring {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    height: 340px;
+  }
+
+  .avatar-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 20px;
+    overflow: hidden;
+  }
+
+  .avatar-initials {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--accent2);
+    opacity: 0.6;
+  }
+
+  .orbit {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px dashed rgba(124,106,247,0.15);
+    animation: orbit-spin 20s linear infinite;
+  }
+
+  .orbit-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @keyframes orbit-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    .hero { padding: 5rem 1.5rem 3rem; flex-direction: column; }
+    .avatar-ring { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">DC<span>.</span></a>
+  <ul>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato" class="nav-cta">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative; overflow:hidden;">
+  <section class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Disponível para projetos
+      </div>
+
+      <h1>
+        Olá, sou<br>
+        <span class="accent">David</span><br>
+        Carrilho.
+      </h1>
+
+      <p class="hero-desc">
+        Mobile Developer com foco em Flutter &amp; Dart. Crio aplicativos iOS e Android com arquitetura limpa, ótima performance e experiência de usuário impecável.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#projetos" class="btn-primary">
+          Ver projetos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contato" class="btn-ghost">Entre em contato</a>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num" id="repo-count">—</div>
+          <div class="stat-label">Repositórios</div>
+        </div>
+        <div>
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Anos de exp.</div>
+        </div>
+        <div>
+          <div class="stat-num">Flutter</div>
+          <div class="stat-label">Stack principal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar decorativo -->
+    <div class="avatar-ring">
+      <div class="avatar-circle">
+        <span class="avatar-initials">DC</span>
+      </div>
+      <div class="orbit" style="inset:-20px;">
+        <div class="orbit-dot"></div>
+      </div>
+      <div class="orbit" style="inset:-50px; animation-duration:35s; animation-direction:reverse; border-color:rgba(63,207,142,0.1)">
+        <div class="orbit-dot" style="background:var(--green);"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- SOBRE -->
+<section id="sobre" class="reveal">
+  <div class="section-label">// sobre</div>
+  <h2>Quem sou eu</h2>
+  <p class="section-sub">Cientista da Computação apaixonado por criar experiências móveis de alto nível.</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+    <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--r2); padding:1.75rem;">
+      <div style="font-size:1.5rem; margin-bottom:0.875rem;">📱</div>
+      <div style="font-family:var(--font-display); font-size:1rem; font-weight:600; margin-bottom:0.5rem;">Mobile First</div>
+      <p style="font-size:0.875rem; color:var(--text2); font-weight:300; line-height:1.65;">Especializado em Flutter/Dart com 5+ anos de experiência construindo apps nativos para iOS e Android com foco em performance e código limpo.</p>
+    </div>
+    <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--r2); padding:1.75rem;">
+      <div style="font-size:1.5rem; margin-bottom:0.875rem;">🏗️</div>
+      <div style="font-family:var(--font-display); font-size:1rem; font-weight:600; margin-bottom:0.5rem;">Clean Architecture</div>
+      <p style="font-size:0.875rem; color:var(--text2); font-weight:300; line-height:1.65;">Fã de arquitetura limpa, SOLID, e boas práticas. Cada projeto é construído para escalar e ser fácil de manter.</p>
+    </div>
+    <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--r2); padding:1.75rem;">
+      <div style="font-size:1.5rem; margin-bottom:0.875rem;">🌐</div>
+      <div style="font-family:var(--font-display); font-size:1rem; font-weight:600; margin-bottom:0.5rem;">Full Stack & Web</div>
+      <p style="font-size:0.875rem; color:var(--text2); font-weight:300; line-height:1.65;">Também atuo com React, Node.js e TypeScript quando o projeto exige uma solução completa — do backend à interface web.</p>
+    </div>
+    <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--r2); padding:1.75rem;">
+      <div style="font-size:1.5rem; margin-bottom:0.875rem;">🎮</div>
+      <div style="font-family:var(--font-display); font-size:1rem; font-weight:600; margin-bottom:0.5rem;">Game Developer</div>
+      <p style="font-size:0.875rem; color:var(--text2); font-weight:300; line-height:1.65;">Desenvolvimento de games como hobby e estudo de lógica. Curiosidade que alimenta soluções criativas no dia a dia.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills" class="reveal">
+  <div class="section-label">// tecnologias</div>
+  <h2>Skills & Stack</h2>
+  <p class="section-sub">As tecnologias que uso no dia a dia para construir produtos de qualidade.</p>
+
+  <div class="skills-grid">
+    <div class="skill-chip"><span class="skill-icon">🎯</span>Flutter</div>
+    <div class="skill-chip"><span class="skill-icon">🐦</span>Dart</div>
+    <div class="skill-chip"><span class="skill-icon">⚛️</span>React Native</div>
+    <div class="skill-chip"><span class="skill-icon">🟨</span>JavaScript</div>
+    <div class="skill-chip"><span class="skill-icon">🔷</span>TypeScript</div>
+    <div class="skill-chip"><span class="skill-icon">🤖</span>Android</div>
+    <div class="skill-chip"><span class="skill-icon">🍎</span>iOS</div>
+    <div class="skill-chip"><span class="skill-icon">🌐</span>Web</div>
+    <div class="skill-chip"><span class="skill-icon">⚛️</span>ReactJs</div>
+    <div class="skill-chip"><span class="skill-icon">🟢</span>Node.js</div>
+    <div class="skill-chip"><span class="skill-icon">🐙</span>Git</div>
+    <div class="skill-chip"><span class="skill-icon">🔥</span>Firebase</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- EXPERIÊNCIA -->
+<section id="experiencia" class="reveal">
+  <div class="section-label">// trajetória</div>
+  <h2>Experiência</h2>
+  <p class="section-sub">Projetos e posições que moldaram minha carreira como desenvolvedor.</p>
+
+  <div class="exp-list">
+    <div class="exp-item">
+      <div>
+        <div class="exp-title">Mobile Developer — Flutter</div>
+        <div class="exp-company">O Novo Mercado / Digibricks</div>
+        <p class="exp-desc">Desenvolvimento de aplicativos mobile multiplataforma com Flutter/Dart. Arquitetura limpa, integrações com Firebase, CI/CD com Codemagic e publicações na App Store e Google Play.</p>
+      </div>
+      <div class="exp-date">2022 — Atual</div>
+    </div>
+    <div class="exp-item">
+      <div>
+        <div class="exp-title">Computer Scientist — Full Stack</div>
+        <div class="exp-company">Projetos próprios & freelance</div>
+        <p class="exp-desc">Construção de aplicativos iOS/Android, plataformas web com React e Node.js, integrações com APIs REST, autenticação JWT e sistemas de gamificação corporativa.</p>
+      </div>
+      <div class="exp-date">2019 — Atual</div>
+    </div>
+    <div class="exp-item">
+      <div>
+        <div class="exp-title">Estudos em Ciência da Computação</div>
+        <div class="exp-company">São Luís — MA, Brasil</div>
+        <p class="exp-desc">Formação em Computer Science com foco em algoritmos, estrutura de dados, desenvolvimento mobile e web. Base sólida que sustenta a abordagem técnica em todos os projetos.</p>
+      </div>
+      <div class="exp-date">2019 — 2023</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJETOS -->
+<section id="projetos" class="reveal">
+  <div class="section-label">// github</div>
+  <h2>Projetos</h2>
+  <p class="section-sub">Repositórios públicos carregados diretamente do GitHub em tempo real.</p>
+
+  <div class="projects-filter" id="filter-btns">
+    <button class="filter-btn active" data-lang="all">Todos</button>
+    <button class="filter-btn" data-lang="Dart">Dart</button>
+    <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
+    <button class="filter-btn" data-lang="TypeScript">TypeScript</button>
+  </div>
+
+  <div class="projects-grid" id="projects-grid">
+    <div class="loading-projects">
+      Buscando repositórios no GitHub<span class="loading-dots"></span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTATO -->
+<section id="contato" class="reveal">
+  <div class="section-label">// contato</div>
+  <h2>Vamos conversar?</h2>
+  <p class="section-sub">Aberto a projetos freelance, oportunidades full-time e parcerias interessantes.</p>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Estou baseado em São Luís, MA — Brasil, trabalhando remotamente com equipes e clientes do mundo todo. Se você tem um projeto em mente, me manda uma mensagem!</p>
+
+      <div class="social-links">
+        <a href="https://github.com/DavidCarrilho" target="_blank" class="social-link">
+          <div class="social-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:var(--text3); margin-bottom:1px;">GitHub</div>
+            <div>@DavidCarrilho</div>
+          </div>
+          <svg style="margin-left:auto; opacity:0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/luan-david-carrilho/" target="_blank" class="social-link">
+          <div class="social-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:var(--text3); margin-bottom:1px;">LinkedIn</div>
+            <div>Luan David Carrilho</div>
+          </div>
+          <svg style="margin-left:auto; opacity:0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://twitter.com/luandavid77" target="_blank" class="social-link">
+          <div class="social-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.264 5.635L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:var(--text3); margin-bottom:1px;">Twitter / X</div>
+            <div>@luandavid77</div>
+          </div>
+          <svg style="margin-left:auto; opacity:0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form-area">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input type="text" id="name" placeholder="Seu nome completo">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label for="subject">Assunto</label>
+        <input type="text" id="subject" placeholder="Proposta de projeto, parceria...">
+      </div>
+      <div class="form-group">
+        <label for="message">Mensagem</label>
+        <textarea id="message" placeholder="Descreva o seu projeto ou ideia..."></textarea>
+      </div>
+      <button class="btn-primary" onclick="handleContact()" style="align-self:flex-start;">
+        Enviar mensagem
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div id="form-msg" style="font-size:0.85rem; color:var(--green); display:none;">✓ Obrigado! Entraremos em contato em breve.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 David Carrilho — São Luís, MA</span>
+  <span style="color:var(--text3);">Feito com Flutter no coração 🐦</span>
+</footer>
+
+<script>
+const GITHUB_USER = 'DavidCarrilho';
+const LANG_COLORS = {
+  'Dart': '#00B4AB',
+  'JavaScript': '#F1E05A',
+  'TypeScript': '#3178C6',
+  'Kotlin': '#7F52FF',
+  'Swift': '#F05138',
+  'Python': '#3572A5',
+  'Java': '#B07219',
+  'HTML': '#E34C26',
+  'CSS': '#563D7C',
+};
+
+const LANG_ICONS = {
+  'Dart': '🎯',
+  'JavaScript': '🟨',
+  'TypeScript': '🔷',
+  'Kotlin': '🟣',
+  'Swift': '🍎',
+  'Python': '🐍',
+  'Java': '☕',
+  'HTML': '🌐',
+  'CSS': '🎨',
+};
+
+let allRepos = [];
+let activeFilter = 'all';
+
+async function fetchGitHubRepos() {
+  const grid = document.getElementById('projects-grid');
+  try {
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${GITHUB_USER}`),
+      fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=30`)
+    ]);
+
+    const userData = await userRes.json();
+    const repos = await reposRes.json();
+
+    if (userData.public_repos) {
+      document.getElementById('repo-count').textContent = userData.public_repos + '+';
+    }
+
+    allRepos = repos.filter(r => !r.fork && r.name !== GITHUB_USER);
+    renderProjects(allRepos);
+  } catch(e) {
+    grid.innerHTML = `
+      <div class="error-state">
+        <div style="font-size:2rem; margin-bottom:1rem;">⚠️</div>
+        <p style="color:var(--text2);">Não foi possível carregar os repositórios.<br>
+        <a href="https://github.com/${GITHUB_USER}" target="_blank" style="color:var(--accent2);">Ver perfil no GitHub →</a></p>
+      </div>`;
+  }
+}
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const days = Math.floor(diff / 86400000);
+  if (days < 1) return 'hoje';
+  if (days < 30) return `${days}d atrás`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}m atrás`;
+  return `${Math.floor(months/12)}a atrás`;
+}
+
+function renderProjects(repos) {
+  const grid = document.getElementById('projects-grid');
+  const filtered = activeFilter === 'all' ? repos : repos.filter(r => r.language === activeFilter);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="error-state"><p style="color:var(--text2);">Nenhum projeto encontrado para este filtro.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(repo => {
+    const lang = repo.language || 'Other';
+    const icon = LANG_ICONS[lang] || '📦';
+    const color = LANG_COLORS[lang] || '#888';
+    const topics = (repo.topics || []).slice(0, 3);
+    const desc = repo.description || 'Sem descrição disponível.';
+
+    return `
+      <a href="${repo.html_url}" target="_blank" class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">${icon}</div>
+          <div class="project-meta">
+            ${repo.stargazers_count > 0 ? `<span class="project-stars">★ ${repo.stargazers_count}</span>` : ''}
+            ${lang !== 'Other' ? `<span class="project-lang" style="color:${color};">${lang}</span>` : ''}
+          </div>
+        </div>
+        <div class="project-name">${repo.name}</div>
+        <p class="project-desc">${desc.length > 120 ? desc.slice(0, 117) + '...' : desc}</p>
+        ${topics.length > 0 ? `
+          <div class="project-topics">
+            ${topics.map(t => `<span class="topic-tag">${t}</span>`).join('')}
+          </div>
+        ` : ''}
+        <div class="project-footer">
+          <span>Atualizado ${timeAgo(repo.updated_at)}</span>
+          <span style="color:var(--accent2); font-size:0.8rem;">Ver no GitHub →</span>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
+
+document.getElementById('filter-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.lang;
+  renderProjects(allRepos);
+});
+
+function handleContact() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  if (!name || !email) {
+    alert('Por favor, preencha nome e email.');
+    return;
+  }
+  document.getElementById('form-msg').style.display = 'block';
+  setTimeout(() => { document.getElementById('form-msg').style.display = 'none'; }, 4000);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+fetchGitHubRepos();
+</script>
+</body>
+</html>
